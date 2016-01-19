@@ -28,10 +28,10 @@ class Screen {
     }
 }
 
-abstract class Ball extends Observable {
+
+abstract class Ball extends Observable  {
 
     public abstract void roll();
-
 
 }
 
@@ -134,12 +134,11 @@ public class MainActivity extends Activity {
         // and calling methods on those objects
         // example using the Football class:
         //Football football = new Football();
-        BouncyBall myBouncyBall = new SuperBall(); //implicit casting from subclass to parent class
-        if (myBouncyBall instanceof SuperBall){ //should check before downcasting
-            Screen.log("myBouncyBall is an instance of SuperBall");
-            SuperBall mySuperBall = (SuperBall) myBouncyBall;
-            mySuperBall.bounce();
-        }
+        Sportscar mySportscar = new Sportscar();
+        BigRig myBigRig = new BigRig();
+        mySportscar.fuelCapacity();
+        myBigRig.fuelCapacity();
+        myBigRig.towingCapacity();
 
 
 
@@ -166,20 +165,63 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+}
 
-    class BouncyBall {
+interface Pitchable{
+    public void pitch(int speed);
+}
 
-        public void bounce (){
+class BouncyBall implements Pitchable {
 
-            Screen.log("BouncyBall bounces!");
-        }
+    public void bounce (){
+        Screen.log("BouncyBall bounces!");
     }
-    class SuperBall extends BouncyBall {
 
-        @Override
-        public void bounce(){
-            super.bounce();
-            Screen.log("at SuperBall speeds!");
-        }
+    public void pitch(int speed) {
+        Screen.log("implementing Pitchable interface, at speed of " + speed);
+    }
+}
+
+class SuperBall extends BouncyBall {
+
+    @Override
+    public void bounce(){
+        super.bounce();
+        Screen.log("at SuperBall speeds!");
+    }
+}
+
+interface TrailerTower{
+
+    public void towingCapacity();
+}
+abstract class Vehicle{
+    int fuel;
+    public abstract void fuelCapacity();
+}
+
+class Sportscar extends Vehicle{
+
+    public Sportscar(){
+        fuel = 100;
+    }
+
+    public void fuelCapacity(){
+        Screen.log("fuel capacity of Sportscar: " +fuel);
+    }
+}
+
+class BigRig extends Vehicle implements TrailerTower{
+    int towingCapacity;
+    public BigRig(){
+        fuel = 200;
+        towingCapacity = 500;
+    }
+    public void fuelCapacity(){
+        Screen.log("fuel capacity of BigRig: " + fuel);
+    }
+
+    public void towingCapacity(){
+        Screen.log("towing capacity of big rig is " + towingCapacity + " tons");
     }
 }
