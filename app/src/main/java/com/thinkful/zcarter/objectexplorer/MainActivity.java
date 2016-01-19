@@ -29,7 +29,10 @@ class Screen {
 }
 
 abstract class Ball extends Observable {
+
     public abstract void roll();
+
+
 }
 
 class Football extends Ball {
@@ -57,6 +60,8 @@ class Referee implements Observer {
 }
 
 abstract class Baseball extends Ball {
+    int speed;
+
     public abstract void pitch();
 }
 
@@ -75,14 +80,16 @@ class Softball extends Baseball {
 }
 
 class Hardball extends Baseball {
-
     public Hardball() {
-
+        speed = 50;
     }
-
+    public Hardball(int speed){
+        this.speed = speed;
+    }
     @Override
     public void pitch() {
         Screen.log("A hard ball is pitched overhand");
+        Screen.log("ball speed: " + this.speed);
         this.setChanged();
         this.notifyObservers();
     }
@@ -127,6 +134,14 @@ public class MainActivity extends Activity {
         // and calling methods on those objects
         // example using the Football class:
         //Football football = new Football();
+        BouncyBall myBouncyBall = new SuperBall(); //implicit casting from subclass to parent class
+        if (myBouncyBall instanceof SuperBall){ //should check before downcasting
+            Screen.log("myBouncyBall is an instance of SuperBall");
+            SuperBall mySuperBall = (SuperBall) myBouncyBall;
+            mySuperBall.bounce();
+        }
+
+
 
     }
 
@@ -150,5 +165,21 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class BouncyBall {
+
+        public void bounce (){
+
+            Screen.log("BouncyBall bounces!");
+        }
+    }
+    class SuperBall extends BouncyBall {
+
+        @Override
+        public void bounce(){
+            super.bounce();
+            Screen.log("at SuperBall speeds!");
+        }
     }
 }
